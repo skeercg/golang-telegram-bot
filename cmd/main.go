@@ -32,11 +32,10 @@ func main() {
 		go func() {
 			if update.Message != nil {
 				chatID := update.Message.Chat.ID
-				msg := tgbotapi.NewMessage(chatID, "")
 
 				switch update.Message.Text {
 				case "/start":
-					msg.Text = "Hello, I'm Imager bot!"
+					msg := tgbotapi.NewMessage(chatID, "Hello, I'm Imager bot!")
 
 					if _, err := bot.Send(msg); err != nil {
 						log.Panic(err)
@@ -48,7 +47,7 @@ func main() {
 						log.Panic(err)
 					}
 				default:
-					msg.Text = "Unknown command"
+					msg := tgbotapi.NewMessage(chatID, "Unknown command")
 
 					if _, err := bot.Send(msg); err != nil {
 						log.Panic(err)

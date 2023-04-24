@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"sync"
 )
 
 type UnsplashResponse struct {
@@ -20,6 +21,7 @@ type URLs struct {
 
 type ImageController struct {
 	UnsplashKey string
+	mu          sync.Mutex
 }
 
 func (c *ImageController) GetPhoto(ChatID int64) tgbotapi.PhotoConfig {
@@ -43,6 +45,9 @@ func (c *ImageController) GetPhoto(ChatID int64) tgbotapi.PhotoConfig {
 	defer response.Body.Close()
 
 	fileName := "image.jpg"
+
+	c.mu.Lock()
+	defer c.mu.Unlock()
 
 	file, err := os.Create(fileName)
 	if err != nil {
